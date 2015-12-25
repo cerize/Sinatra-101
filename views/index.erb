@@ -1,0 +1,128 @@
+<div class="jumbotron text-center">
+
+  <h1 class="title">My Task Manager</h1>
+
+    <form class="task" action="/" method="post">
+      <input class="btn-lg btn_top" type="text" name="content" >
+      <input class="btn-lg btn_top" type="submit" value="Create a task">
+    </form>
+</div>
+
+
+
+
+
+
+<div class="container">
+
+<!-- Pending Tasks -->
+<h2><span class="glyphicon glyphicon-th-list"></span> Pending Tasks</h2>
+<%@tasks_incomplete.each do |task|%>
+  <div class="row box">
+    <!-- Shows the content of the task -->
+    <div class="col-xs-6 col-md-6">
+      <%=task.content%>
+    </div>
+    <!-- Buttons -->
+    <div class="col-xs-6 col-md-6">
+      <!-- Trigger the delete modal-->
+      <button class="btn-right" type="button"  data-toggle="modal" data-target="#del<%=task.id%>"><span class="glyphicon glyphicon-trash"></button>
+      <!-- Trigger the edit modal-->
+      <button class="btn-right" type="button"  data-toggle="modal" data-target="#edit<%=task.id%>"><span class="glyphicon glyphicon-pencil"></button>
+      <!-- Changes the status of the task -->
+      <form class="task btn-right" action="/complete/<%=task.id%>" method="post">
+        <button type="submit"><span class="glyphicon glyphicon-ok"></span></button>
+      </form>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+<%end%>
+
+
+
+<!-- Complete Tasks -->
+<h2><span class="glyphicon glyphicon-ok"></span> Complete Tasks</h2>
+<%@tasks_complete.each do |task|%>
+  <div class="row box">
+    <!-- Shows the content of the task -->
+    <div class="col-xs-6 col-md-6">
+      <%=task.content%>
+    </div>
+    <!-- Buttons -->
+    <div class="col-xs-6 col-md-6">
+      <!-- Trigger the delete modal-->
+      <button class="btn-right" type="button"  data-toggle="modal" data-target="#del<%=task.id%>"><span class="glyphicon glyphicon-trash"></button>
+      <!-- Trigger the edit modal-->
+      <button class="btn-right" type="button" data-toggle="modal" data-target="#edit<%=task.id%>"><span class="glyphicon glyphicon-pencil"></span></button>
+        <!-- Changes the status of the task -->
+      <form class="task btn-right" action="/complete/<%=task.id%>" method="post">
+        <button type="submit"><span class="glyphicon glyphicon-th-list"></span></button>
+      </form>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+<%end%>
+
+
+<!-- Modal to delete -->
+<%@tasks.each do |task|%>
+  <!-- Modal -->
+  <div id="del<%=task.id%>" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Delete a task</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this task?</p>
+        </div>
+        <div class="modal-footer">
+          <form action="/delete/<%=task.id%>" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <input  class="task btn-left" type="submit" value="Yes">
+          </form>
+          <button  class="task btn-right" type="button" data-dismiss="modal">No</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<%end%>
+
+<!-- Modal to edit -->
+<%@tasks.each do |task|%>
+  <!-- Modal -->
+  <div id="edit<%=task.id%>" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit</h4>
+        </div>
+        <div class="modal-body">
+          <form action="/edit/<%=task.id%>" method="post">
+            <input type="hidden" name="_method" value="put">
+            <input type="text" value="<%=task.content%>" name="content">
+            <input type="submit" value="Save" >
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-right" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<%end%>
+
+
+
+
+
+</div>
